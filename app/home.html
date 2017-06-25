@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OSU Postbacc. CS Course Reviews</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script type="text/javascript" src="backend.js"></script>
+        <script type="text/javascript" src="frontend.js"></script>
+
+        <style>
+            .myJumbotron {
+                background-color: #DC4405;
+            }
+
+            .right {
+                float: right;
+            }
+
+            .left {
+                float: left;
+                margin-left: 30px;
+            }
+
+            .reviews {
+                height: 350px;
+                overflow: scroll;
+            }
+            .chart div {
+              font: 10px sans-serif;
+              text-align: left;
+              padding: 3px;
+              margin: 1px;
+              color: white;
+            }
+
+            #one {
+                width: 30px;
+                height: 25px;
+                background-color: purple;
+            }
+
+            #two {
+                width: 30px;
+                height: 25px;
+                background-color: fuchsia;
+            }
+
+            #three {
+                width: 30px;
+                height: 25px;
+                background-color: blue;
+            }
+
+            #four {
+                width: 30px;
+                height: 25px;
+                background-color: navy;
+            }
+
+            #five {
+                width: 30px;
+                height: 25px;
+                background-color: teal;
+
+            }
+
+            #small {
+                width: 30px;
+                height: 25px;
+                background-color: orange;
+            }
+
+            #medium {
+                width: 30px;
+                height: 25px;
+                background-color: red;
+            }
+
+            #large {
+                width: 30px;
+                height: 25px;
+                background-color: maroon;
+            }
+
+            #huge {
+                width: 30px;
+                height: 25px;
+                background-color: black;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div class="jumbotron myJumbotron">
+            <div class="container">
+              <h1>OSU Postbacc. CS Course Reviews</h1>
+              <p>Search for Course Reviews from your fellow Beavers!</p>
+                <div class="row">
+                  <div class="col-lg-6">
+                      <div class="input-group input-group-lg">
+                          <input type="text" class="form-control" id="search" placeholder="Enter Course Number">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button" id="submit">See Reviews</button>
+                        </span>
+                      </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+            </div>
+        </div>
+
+<script>
+  var data = JSON.parse(localStorage.getItem("courseData"));
+  var button = document.querySelector("button");
+  var inputText;
+  button.addEventListener("click", function() {
+    inputText = document.getElementById("search").value;
+    var courseName = getCourseName(inputText);
+    if(courseName != undefined)
+    {
+      //display the course name
+      document.getElementById("displayName").textContent = courseName;
+
+      //clear and populate the reviews list
+      var ul = document.querySelector(".reviews");
+      ul.innerHTML = "";
+      for(var i = 0; i < data[courseName].comments.length; i++)
+      {
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(data[courseName].comments[i]));
+        li.setAttribute("class", "list-group-item"); // added line
+        ul.appendChild(li);
+      }
+
+
+      function pixelString (num)
+      {
+        var px = "px";
+        var number = num;
+        var diffpx = number.toString();
+        var pixels = diffpx.concat(px);
+        return pixels;
+      }
+      var scaleFactor = 15;
+      document.getElementById("one").style.width = pixelString(data[courseName].difficulty[1] * scaleFactor );
+      document.getElementById("two").style.width = pixelString(data[courseName].difficulty[2] * scaleFactor );
+      document.getElementById("three").style.width = pixelString(data[courseName].difficulty[3] * scaleFactor );
+      document.getElementById("four").style.width = pixelString(data[courseName].difficulty[4] * scaleFactor );
+      document.getElementById("five").style.width = pixelString(data[courseName].difficulty[5] * scaleFactor );
+      document.getElementById("small").style.width = pixelString(data[courseName].timeSpent["0-5 hours"] * scaleFactor );
+      document.getElementById("medium").style.width = pixelString(data[courseName].timeSpent["6-12 hours"] * scaleFactor );
+      document.getElementById("large").style.width = pixelString(data[courseName].timeSpent["13-18 hours"] * scaleFactor );
+      document.getElementById("huge").style.width = pixelString(data[courseName].timeSpent["18+ hours"] * scaleFactor );
+    }
+    else
+    {
+      document.getElementById("displayName").textContent = "Invalid Input";
+      var ul = document.querySelector(".reviews");
+      ul.innerHTML = "";
+      document.getElementById("one").style.width = "30px";
+      document.getElementById("two").style.width = "30px";
+      document.getElementById("three").style.width = "30px";
+      document.getElementById("four").style.width = "30px";
+      document.getElementById("five").style.width = "30px";
+      document.getElementById("small").style.width = "30px";
+      document.getElementById("medium").style.width = "30px";
+      document.getElementById("large").style.width = "30px";
+      document.getElementById("huge").style.width = "30px";
+    }
+  });
+
+  document.getElementById("search").addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+      document.getElementById("submit").click();
+    }
+  })
+
+
+  function getCourseName(string){
+    for (var key in data) {
+      if (key.toLowerCase().includes(string.toLowerCase()))
+        return key;
+    }
+    return undefined;
+  }
+</script>
+
+<!-- /graph -->
+<div class="left" style="margin-bottom:30px">
+    <h4 id="displayName"></h4>
+    <h4>Course Difficulty (Out of 5)</h4>
+      <div class="chart">
+        <div id="one">1</div>
+        <div id="two">2</div>
+        <div id="three">3</div>
+        <div id="four">4</div>
+        <div id="five">5</div>
+      </div>
+      <h4>Hours Per Week</h4>
+      <div class="chart">
+        <div id="small">0-5</div>
+        <div id="medium">6-12</div>
+        <div id="large">13-18</div>
+        <div id="huge">18+</div>
+      </div>
+
+</div>
+
+<!-- /graph -->
+
+
+        <ul class="list-group col-lg-6 right reviews">
+        </ul>
+    </body>
+</html>
