@@ -1,0 +1,19 @@
+{
+  "name": "coursereviewconstruers",
+  "version": "1.0.0",
+  "description": "A project for the inaugural OSU CS postbac hackathon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/courseReviewConstruers/courseReviewConstruers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/courseReviewConstruers/courseReviewConstruers/issues"
+  },
+  "homepage": "https://github.com/courseReviewConstruers/courseReviewConstruers#readme"
+}
